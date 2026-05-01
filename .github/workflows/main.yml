@@ -1,22 +1,27 @@
-name: Tu_Cloud_Gaming_Workflow
+name: Tu_Cloud_Gaming_Keep_Alive
 on:
   workflow_dispatch:
 
 jobs:
-  create-vm:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Tailscale
+      - name: Kết nối Tailscale
         uses: tailscale/github-action@v2
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: Deploy Environment for BetterGFN
+      - name: Thiết lập môi trường
         run: |
-          echo "Đang thiết lập môi trường sạch..."
-          # Các lệnh khởi tạo hệ thống và tối ưu mạng tại đây
-          sudo apt-get update && sudo apt-get install -y wget
-          echo "Hoàn tất! Bạn có thể truy cập BetterGFN qua IP sạch."
+          echo "Hệ thống đang sẵn sàng..."
+          # Bạn có thể cài đặt thêm phần mềm tại đây
+
+      - name: Giữ máy ảo hoạt động (Keep Alive)
+        run: |
+          echo "Máy ảo đang chạy. Bạn có thể kết nối qua Tailscale."
+          echo "Để tắt máy ảo, hãy nhấn 'Cancel workflow' trên GitHub."
+          # Đoạn mã này giữ máy ảo chờ trong 6 tiếng (21600 giây)
+          sleep 21600
