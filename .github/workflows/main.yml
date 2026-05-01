@@ -1,0 +1,22 @@
+name: Tu_Cloud_Gaming_Workflow
+on:
+  workflow_dispatch:
+
+jobs:
+  create-vm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Tailscale
+        uses: tailscale/github-action@v2
+        with:
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+
+      - name: Deploy Environment for BetterGFN
+        run: |
+          echo "Đang thiết lập môi trường sạch..."
+          # Các lệnh khởi tạo hệ thống và tối ưu mạng tại đây
+          sudo apt-get update && sudo apt-get install -y wget
+          echo "Hoàn tất! Bạn có thể truy cập BetterGFN qua IP sạch."
