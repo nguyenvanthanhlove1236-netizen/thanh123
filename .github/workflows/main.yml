@@ -1,27 +1,30 @@
-name: Tu_Cloud_Gaming_Keep_Alive
+name: Tu_Cloud_Gaming_FULL_VERSION
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: 1. Lay code ve
         uses: actions/checkout@v4
 
-      - name: Kết nối Tailscale
+      - name: 2. Ket noi Tailscale
         uses: tailscale/github-action@v2
         with:
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
-      - name: Thiết lập môi trường
+      - name: 3. Cai dat Giao dien & RDP (De dang nhap tu Windows)
         run: |
-          echo "Hệ thống đang sẵn sàng..."
-          # Bạn có thể cài đặt thêm phần mềm tại đây
+          sudo apt-get update
+          sudo apt-get install -y xfce4 xfce4-goodies xrdp
+          # Dong lenh quan trong nhat: Thiet lap User va Password
+          sudo useradd -m runneradmin
+          sudo adduser runneradmin sudo
+          echo "runneradmin:TuCloud123" | sudo chpasswd
+          sudo sed -i 's/allowed_users=console/allowed_users=anybody/' /etc/xrdp/Xwrapper.config
+          sudo systemctl restart xrdp
+          echo "He thong da san sang!"
 
-      - name: Giữ máy ảo hoạt động (Keep Alive)
-        run: |
-          echo "Máy ảo đang chạy. Bạn có thể kết nối qua Tailscale."
-          echo "Để tắt máy ảo, hãy nhấn 'Cancel workflow' trên GitHub."
-          # Đoạn mã này giữ máy ảo chờ trong 6 tiếng (21600 giây)
-          sleep 21600
+      - name: 4. Giu may ao khong bi tat (Trong 6 tieng)
+        run: sleep 21600
